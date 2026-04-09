@@ -1,0 +1,199 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fraunces:ital,wght@0,400;0,600;1,300;1,400;1,600&display=swap');
+
+:root {
+  --navy: #0F1F3D;
+  --navy-light: #162847;
+  --navy-mid: #1E3A5F;
+  --sky: #2A7FD4;
+  --sky-light: #4A9FE4;
+  --amber: #E8A020;
+  --amber-light: #F0B830;
+  --amber-dark: #C47010;
+  --bg: #FAF9F6;
+  --bg-warm: #F4F1EC;
+  --text-primary: #0F1F3D;
+  --text-secondary: #4A5568;
+  --text-muted: #8A96A8;
+  --border: #E8E4DC;
+  --white: #FFFFFF;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: var(--bg);
+  color: var(--text-primary);
+  overflow-x: hidden;
+}
+
+.font-serif {
+  font-family: 'Fraunces', serif;
+}
+
+/* Hero title clamp */
+.hero-title {
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+}
+
+/* Glass card */
+.glass-card {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.glass-dark {
+  background: rgba(15, 31, 61, 0.7);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Reveal sections — visible by default */
+.reveal-section {
+  opacity: 1;
+}
+
+/* Spinning dashed border */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 18s linear infinite;
+}
+
+/* Stagger children */
+.stagger-child {
+  opacity: 1;
+}
+
+/* Hover card dark */
+.hover-dark-card {
+  transition: background-color 0.35s ease, color 0.35s ease, box-shadow 0.35s ease;
+}
+.hover-dark-card:hover {
+  background-color: var(--navy);
+  color: white;
+  box-shadow: 0 20px 60px rgba(15, 31, 61, 0.25);
+}
+.hover-dark-card:hover .card-icon-wrap {
+  background-color: rgba(255,255,255,0.1);
+  color: var(--amber);
+}
+.hover-dark-card:hover .card-desc {
+  color: rgba(255,255,255,0.65);
+}
+.hover-dark-card:hover .card-tag {
+  background-color: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.5);
+}
+
+/* Destination card hover */
+.dest-card .dest-desc {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.dest-card:hover .dest-desc {
+  opacity: 1;
+  transform: translateY(0);
+}
+.dest-card .dest-title-wrap {
+  transform: translateY(8px);
+  transition: transform 0.4s ease;
+}
+.dest-card:hover .dest-title-wrap {
+  transform: translateY(0);
+}
+.dest-card img {
+  transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.dest-card:hover img {
+  transform: scale(1.08);
+}
+
+/* Testimonial card */
+.testi-card img {
+  filter: grayscale(1);
+  transition: filter 0.5s ease;
+}
+.testi-card:hover img {
+  filter: grayscale(0);
+}
+
+/* Selection color */
+::selection {
+  background-color: var(--amber);
+  color: var(--navy);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--navy-mid);
+  border-radius: 3px;
+}
+
+/* Input focus */
+.form-input {
+  background: rgba(15, 31, 61, 0.04);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 20px;
+  width: 100%;
+  font-size: 15px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--text-primary);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  outline: none;
+}
+.form-input:focus {
+  border-color: var(--sky);
+  box-shadow: 0 0 0 3px rgba(42, 127, 212, 0.12);
+}
+.form-input::placeholder {
+  color: var(--text-muted);
+}
+
+/* Amber pulse dot */
+@keyframes pulse-amber {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.4); }
+}
+.pulse-amber {
+  animation: pulse-amber 2s ease-in-out infinite;
+}
+
+/* FAQ */
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.faq-answer.open {
+  max-height: 200px;
+}
