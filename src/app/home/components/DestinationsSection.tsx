@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import AppImage from '@/components/ui/AppImage';
 
 interface Destination {
@@ -13,7 +13,7 @@ interface Destination {
   tag: string;
 }
 
-const destinations: Destination[] = [
+const fallbackDestinations: Destination[] = [
 {
   city: 'Dubai',
   country: 'UAE',
@@ -54,6 +54,18 @@ const destinations: Destination[] = [
 
 export default function DestinationsSection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const [destinations, setDestinations] = useState<Destination[]>(fallbackDestinations);
+
+  useEffect(() => {
+    fetch('/api/destinations').then(r => r.json()).then((data) => {
+      if (Array.isArray(data) && data.length > 0) {
+        setDestinations(data.map((d: { city: string; country: string; tagline: string; imageUrl?: string; accentColor?: string; tag?: string }) => ({
+          city: d.city, country: d.country, tagline: d.tagline,
+          accent: 'text-amber-brand', image: d.imageUrl || '', alt: `${d.city} photo`, tag: d.tag || '',
+        })));
+      }
+    }).catch(() => {});
+  }, []);
 
   useEffect(() => {
     const initGsap = async () => {

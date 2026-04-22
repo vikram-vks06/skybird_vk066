@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import AppImage from '@/components/ui/AppImage';
 
 interface Testimonial {
@@ -13,7 +13,7 @@ interface Testimonial {
   accentColor: string;
 }
 
-const testimonials: Testimonial[] = [
+const fallbackTestimonials: Testimonial[] = [
 {
   name: 'Rahul Mehta',
   role: 'VP Operations',
@@ -45,6 +45,18 @@ const testimonials: Testimonial[] = [
 
 export default function TestimonialsSection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>(fallbackTestimonials);
+
+  useEffect(() => {
+    fetch('/api/testimonials').then(r => r.json()).then((data) => {
+      if (Array.isArray(data) && data.length > 0) {
+        setTestimonials(data.map((t: { name: string; role: string; company: string; quote: string; imageUrl?: string; accentColor?: string }) => ({
+          name: t.name, role: t.role, company: t.company, quote: t.quote,
+          image: t.imageUrl || '', alt: `${t.name} photo`, accentColor: t.accentColor || '#4F8BD2',
+        })));
+      }
+    }).catch(() => {});
+  }, []);
 
   useEffect(() => {
     const initGsap = async () => {

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import Icon from '@/components/ui/AppIcon';
+import toast from 'react-hot-toast';
 
 export default function ContactSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -49,10 +50,32 @@ export default function ContactSection() {
     setFormState((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Backend connection point — connect to CRM or email API here
-    setSubmitted(true);
+    try {
+      const res = await fetch('/api/contacts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fullName: formState.name,
+          company: formState.company,
+          email: formState.email,
+          phone: formState.phone,
+          destination: formState.destination,
+          travelers: formState.travelers,
+          message: formState.message,
+        }),
+      });
+      if (res.ok) {
+        setSubmitted(true);
+        toast.success('Inquiry submitted successfully!');
+      } else {
+        const data = await res.json();
+        toast.error(data.error || 'Failed to submit');
+      }
+    } catch {
+      toast.error('Something went wrong');
+    }
   };
 
   return (

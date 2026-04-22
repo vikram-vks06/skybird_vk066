@@ -1,8 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fraunces:ital,wght@0,400;0,600;1,300;1,400;1,600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fraunces:ital,wght@0,400;0,600;1,300;1,400;1,600&display=swap');
 
 :root {
   --navy: #0F1F3D;
@@ -196,4 +196,9 @@ body {
 }
 .faq-answer.open {
   max-height: 200px;
+}
+
+/* Services section — amber glow on CTA hover */
+.hover\:shadow-amber:hover {
+  box-shadow: 0 8px 30px rgba(232, 160, 32, 0.35);
 }

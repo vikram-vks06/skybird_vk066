@@ -77,6 +77,14 @@ export default function Header() {
 
           {/* CTA */}
           <div className="flex items-center gap-3">
+            {/* Login button temporarily hidden
+            <Link
+              href="/login"
+              className="hidden sm:flex items-center text-sm font-semibold text-navy/70 hover:text-navy transition-colors duration-200"
+            >
+              Login
+            </Link>
+            */}
             <button
               onClick={() => handleNavClick('#contact')}
               className="hidden sm:flex items-center gap-2 bg-navy text-white px-5 py-2.5 rounded-full text-sm font-bold hover:bg-navy-mid transition-colors duration-200 shadow-sm"
@@ -135,6 +143,15 @@ export default function Header() {
           >
             Contact Us
           </button>
+          {/* Login button temporarily hidden
+          <Link
+            href="/login"
+            onClick={() => setMenuOpen(false)}
+            className="text-lg font-semibold text-white/60 hover:text-white transition-colors min-h-[44px] flex items-center"
+          >
+            Login / Register
+          </Link>
+          */}
         </div>
       </div>
     </>

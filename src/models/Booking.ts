@@ -1,0 +1,35 @@
+import mongoose, { Schema, Document, Types } from 'mongoose';
+
+export interface IBooking extends Document {
+  clientId: Types.ObjectId;
+  destination: string;
+  travelDate: Date;
+  returnDate: Date;
+  travelers: number;
+  services: string[];
+  totalAmount: number;
+  paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded';
+  razorpayOrderId: string;
+  razorpayPaymentId: string;
+  status: 'pending' | 'confirmed' | 'cancelled' | 'completed';
+  notes: string;
+  createdAt: Date;
+}
+
+const BookingSchema = new Schema<IBooking>({
+  clientId: { type: Schema.Types.ObjectId, ref: 'Client', required: true },
+  destination: { type: String, required: true },
+  travelDate: { type: Date, required: true },
+  returnDate: { type: Date, required: true },
+  travelers: { type: Number, required: true, min: 1 },
+  services: [{ type: String }],
+  totalAmount: { type: Number, required: true },
+  paymentStatus: { type: String, enum: ['pending', 'paid', 'failed', 'refunded'], default: 'pending' },
+  razorpayOrderId: { type: String, default: '' },
+  razorpayPaymentId: { type: String, default: '' },
+  status: { type: String, enum: ['pending', 'confirmed', 'cancelled', 'completed'], default: 'pending' },
+  notes: { type: String, default: '' },
+  createdAt: { type: Date, default: Date.now },
+});
+
+export default mongoose.models.Booking || mongoose.model<IBooking>('Booking', BookingSchema);
