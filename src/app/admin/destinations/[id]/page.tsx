@@ -12,6 +12,8 @@ export default function AdminDestinationFormPage() {
   const isNew = params.id === 'new';
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({ city: '', country: '', tagline: '', imageUrl: '', accentColor: '#4F8BD2', tag: '', isActive: true, order: 0 });
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState('');
 
   useEffect(() => {
     if (!isNew) {
@@ -21,12 +23,35 @@ export default function AdminDestinationFormPage() {
     }
   }, [params.id, isNew]);
 
+  useEffect(() => {
+    if (!imageFile) {
+      setPreviewUrl('');
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(imageFile);
+    setPreviewUrl(objectUrl);
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [imageFile]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     const url = isNew ? '/api/destinations' : `/api/destinations/${params.id}`;
     const method = isNew ? 'POST' : 'PUT';
-    const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) });
+
+    const payload = new FormData();
+    payload.append('city', form.city);
+    payload.append('country', form.country);
+    payload.append('tagline', form.tagline);
+    payload.append('accentColor', form.accentColor);
+    payload.append('tag', form.tag);
+    payload.append('isActive', String(form.isActive));
+    payload.append('order', String(form.order));
+    payload.append('imageUrl', form.imageUrl || '');
+    if (imageFile) payload.append('image', imageFile);
+
+    const res = await fetch(url, { method, body: payload });
     if (res.ok) { toast.success(isNew ? 'Created!' : 'Updated!'); router.push('/admin/destinations'); }
     else { const d = await res.json(); toast.error(d.error || 'Failed'); }
     setLoading(false);
@@ -55,14 +80,29 @@ export default function AdminDestinationFormPage() {
           </div>
           <div className="grid grid-cols-2 gap-5">
             <div className="space-y-1.5">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-navy/50">Image URL</label>
-              <input value={form.imageUrl} onChange={(e) => setForm({ ...form, imageUrl: e.target.value })} className="form-input" />
+              <label className="text-[10px] font-bold uppercase tracking-widest text-navy/50">Upload Image</label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+                className="form-input file:mr-3 file:px-3 file:py-1.5 file:rounded-lg file:border-0 file:bg-navy/5 file:text-xs file:font-bold"
+              />
             </div>
             <div className="space-y-1.5">
               <label className="text-[10px] font-bold uppercase tracking-widest text-navy/50">Tag</label>
               <input value={form.tag} onChange={(e) => setForm({ ...form, tag: e.target.value })} className="form-input" placeholder="e.g. Popular" />
             </div>
           </div>
+          {(previewUrl || form.imageUrl) && (
+            <div className="space-y-1.5">
+              <label className="text-[10px] font-bold uppercase tracking-widest text-navy/50">Image Preview</label>
+              <img
+                src={previewUrl || form.imageUrl}
+                alt="Destination preview"
+                className="w-28 h-28 rounded-xl object-cover border border-navy/10"
+              />
+            </div>
+          )}
           <div className="grid grid-cols-3 gap-5">
             <div className="space-y-1.5">
               <label className="text-[10px] font-bold uppercase tracking-widest text-navy/50">Accent Color</label>

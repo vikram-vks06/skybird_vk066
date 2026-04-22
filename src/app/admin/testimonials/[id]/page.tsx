@@ -12,6 +12,8 @@ export default function AdminTestimonialFormPage() {
   const isNew = params.id === 'new';
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({ name: '', role: '', company: '', quote: '', imageUrl: '', accentColor: '#4F8BD2', isActive: true, order: 0 });
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState('');
 
   useEffect(() => {
     if (!isNew) {
@@ -21,6 +23,17 @@ export default function AdminTestimonialFormPage() {
     }
   }, [params.id, isNew]);
 
+  useEffect(() => {
+    if (!imageFile) {
+      setPreviewUrl('');
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(imageFile);
+    setPreviewUrl(objectUrl);
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [imageFile]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -28,7 +41,18 @@ export default function AdminTestimonialFormPage() {
     const url = isNew ? '/api/testimonials' : `/api/testimonials/${params.id}`;
     const method = isNew ? 'POST' : 'PUT';
 
-    const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) });
+    const payload = new FormData();
+    payload.append('name', form.name);
+    payload.append('role', form.role);
+    payload.append('company', form.company);
+    payload.append('quote', form.quote);
+    payload.append('accentColor', form.accentColor);
+    payload.append('isActive', String(form.isActive));
+    payload.append('order', String(form.order));
+    payload.append('imageUrl', form.imageUrl || '');
+    if (imageFile) payload.append('image', imageFile);
+
+    const res = await fetch(url, { method, body: payload });
 
     if (res.ok) {
       toast.success(isNew ? 'Testimonial created!' : 'Testimonial updated!');
@@ -63,10 +87,25 @@ export default function AdminTestimonialFormPage() {
               <input value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })} className="form-input" required />
             </div>
             <div className="space-y-1.5">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-navy/50">Image URL</label>
-              <input value={form.imageUrl} onChange={(e) => setForm({ ...form, imageUrl: e.target.value })} className="form-input" placeholder="https://..." />
+              <label className="text-[10px] font-bold uppercase tracking-widest text-navy/50">Upload Image</label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+                className="form-input file:mr-3 file:px-3 file:py-1.5 file:rounded-lg file:border-0 file:bg-navy/5 file:text-xs file:font-bold"
+              />
             </div>
           </div>
+          {(previewUrl || form.imageUrl) && (
+            <div className="space-y-1.5">
+              <label className="text-[10px] font-bold uppercase tracking-widest text-navy/50">Image Preview</label>
+              <img
+                src={previewUrl || form.imageUrl}
+                alt="Testimonial preview"
+                className="w-28 h-28 rounded-xl object-cover border border-navy/10"
+              />
+            </div>
+          )}
           <div className="space-y-1.5">
             <label className="text-[10px] font-bold uppercase tracking-widest text-navy/50">Quote *</label>
             <textarea value={form.quote} onChange={(e) => setForm({ ...form, quote: e.target.value })} className="form-input min-h-[100px] resize-none" required />

@@ -28,7 +28,7 @@ const fallbackDestinations: Destination[] = [
   country: 'Asia-Pacific',
   tagline: 'Conference hubs, fintech corridors, and seamless transit.',
   accent: 'text-sky-brand',
-  image: "https://img.rocket.new/generatedImages/rocket_gen_img_162a2feeb-1774287754687.png",
+  image: "https://images.unsplash.com/photo-1525625293386-3f8f99389edd",
   alt: 'Singapore Marina Bay at night, dark dramatic sky, city lights reflecting on bay water, deep shadows between towers, moody cinematic atmosphere',
   tag: 'Business Hub'
 },
@@ -37,7 +37,7 @@ const fallbackDestinations: Destination[] = [
   country: 'India',
   tagline: 'Financial capital — seamless domestic corporate travel.',
   accent: 'text-amber-light',
-  image: "https://img.rocket.new/generatedImages/rocket_gen_img_1232b4735-1775666451351.png",
+  image: "https://images.unsplash.com/photo-1570168007204-dfb528c6958f",
   alt: 'Mumbai Marine Drive at night, deep dark sky, city lights creating golden streaks along the curved coastline, dense shadows, atmospheric low-light urban scene',
   tag: 'Domestic'
 },
@@ -59,10 +59,22 @@ export default function DestinationsSection() {
   useEffect(() => {
     fetch('/api/destinations').then(r => r.json()).then((data) => {
       if (Array.isArray(data) && data.length > 0) {
-        setDestinations(data.map((d: { city: string; country: string; tagline: string; imageUrl?: string; accentColor?: string; tag?: string }) => ({
-          city: d.city, country: d.country, tagline: d.tagline,
-          accent: 'text-amber-brand', image: d.imageUrl || '', alt: `${d.city} photo`, tag: d.tag || '',
-        })));
+        setDestinations(data.map((d: { city: string; country: string; tagline: string; imageUrl?: string; accentColor?: string; tag?: string }) => {
+          const cityKey = (d.city || '').trim().toLowerCase();
+          const fallback = fallbackDestinations.find((item) => cityKey.startsWith(item.city.toLowerCase()));
+
+          return ({
+          city: d.city,
+          country: d.country,
+          tagline: d.tagline,
+          accent: 'text-amber-brand',
+          image: (typeof d.imageUrl === 'string' && d.imageUrl.trim())
+            || fallback?.image
+            || '/assets/images/no_image.png',
+          alt: `${d.city} photo`,
+          tag: d.tag || fallback?.tag || '',
+        });
+      }));
       }
     }).catch(() => {});
   }, []);
@@ -122,9 +134,9 @@ export default function DestinationsSection() {
 
       {/* Destination Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-        {destinations.map((dest) =>
+        {destinations.map((dest, idx) =>
         <div
-          key={dest.city}
+          key={idx}
           className="dest-card relative overflow-hidden rounded-4xl aspect-[3/4] shadow-card group cursor-pointer opacity-100"
           onClick={handleContactClick}
           role="button"

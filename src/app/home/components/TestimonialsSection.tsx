@@ -19,7 +19,7 @@ const fallbackTestimonials: Testimonial[] = [
   role: 'VP Operations',
   company: 'Tata Consultancy Services',
   quote: '"Sky Birds cut our travel spend by 22% in the first quarter — without reducing comfort. Their itemized invoices finally gave us clarity on where the budget was going."',
-  image: "https://img.rocket.new/generatedImages/rocket_gen_img_1e7bca6b4-1763295393217.png",
+  image: "https://images.unsplash.com/photo-1560250097-0b93528c311a",
   alt: 'Professional Indian man in business suit, confident corporate headshot',
   accentColor: '#E8A020'
 },
@@ -28,7 +28,7 @@ const fallbackTestimonials: Testimonial[] = [
   role: 'Head of HR & Admin',
   company: 'Infosys BPM',
   quote: '"We manage travel for 300+ employees. Sky Birds assigned us a dedicated coordinator who handles everything from visa letters to airport pickups. Genuinely seamless."',
-  image: "https://img.rocket.new/generatedImages/rocket_gen_img_196e49a93-1763300561401.png",
+  image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e",
   alt: 'Professional Indian woman in corporate attire, confident business headshot',
   accentColor: '#2A7FD4'
 },
@@ -37,7 +37,7 @@ const fallbackTestimonials: Testimonial[] = [
   role: 'Managing Director',
   company: 'Mahindra Logistics',
   quote: '"Three international conferences, six cities, forty delegates — Sky Birds handled it all without a single escalation. That reliability is priceless for us."',
-  image: "https://img.rocket.new/generatedImages/rocket_gen_img_1472905b6-1763296356546.png",
+  image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d",
   alt: 'Senior Indian business executive in formal suit, authoritative corporate portrait',
   accentColor: '#E8A020'
 }];
@@ -50,10 +50,20 @@ export default function TestimonialsSection() {
   useEffect(() => {
     fetch('/api/testimonials').then(r => r.json()).then((data) => {
       if (Array.isArray(data) && data.length > 0) {
-        setTestimonials(data.map((t: { name: string; role: string; company: string; quote: string; imageUrl?: string; accentColor?: string }) => ({
-          name: t.name, role: t.role, company: t.company, quote: t.quote,
-          image: t.imageUrl || '', alt: `${t.name} photo`, accentColor: t.accentColor || '#4F8BD2',
-        })));
+        setTestimonials(data.map((t: { name: string; role: string; company: string; quote: string; imageUrl?: string; accentColor?: string }) => {
+          const nameKey = (t.name || '').trim().toLowerCase();
+          const fallback = fallbackTestimonials.find((item) => nameKey.startsWith(item.name.toLowerCase().split(' ')[0]));
+
+          return ({
+            name: t.name,
+            role: t.role,
+            company: t.company,
+            quote: t.quote,
+            image: (typeof t.imageUrl === 'string' && t.imageUrl.trim()) || fallback?.image || '/assets/images/no_image.png',
+            alt: `${t.name} photo`,
+            accentColor: t.accentColor || fallback?.accentColor || '#4F8BD2',
+          });
+        }));
       }
     }).catch(() => {});
   }, []);

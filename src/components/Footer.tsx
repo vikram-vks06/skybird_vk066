@@ -24,7 +24,7 @@ export default function Footer() {
             { label: 'Terms', href: '#' },
           ]?.map((link) => (
             <Link
-              key={link?.href}
+              key={link?.label}
               href={link?.href}
               className="text-sm font-medium text-navy/50 hover:text-navy transition-colors duration-200 focus:outline-none focus:underline min-h-[44px] flex items-center"
             >

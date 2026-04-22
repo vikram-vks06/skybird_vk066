@@ -4,15 +4,16 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
+import AppImage from '@/components/ui/AppImage';
 
-interface Destination { _id: string; city: string; country: string; tagline: string; tag: string; isActive: boolean; order: number; }
+interface Destination { _id: string; city: string; country: string; tagline: string; imageUrl?: string; tag: string; isActive: boolean; order: number; }
 
 export default function AdminDestinationsPage() {
   const [items, setItems] = useState<Destination[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchItems = async () => {
-    const res = await fetch('/api/destinations');
+    const res = await fetch('/api/destinations?all=1');
     const data = await res.json();
     setItems(Array.isArray(data) ? data : []);
     setLoading(false);
@@ -47,7 +48,15 @@ export default function AdminDestinationsPage() {
           <div className="space-y-3">
             {items.map((item) => (
               <div key={item._id} className="bg-white rounded-2xl p-5 shadow-card flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center text-xl" style={{ backgroundColor: 'rgba(42,127,212,0.1)' }}>🌍</div>
+                <div className="w-14 h-14 rounded-xl overflow-hidden shrink-0">
+                  <AppImage
+                    src={item.imageUrl || '/assets/images/no_image.png'}
+                    alt={`${item.city} photo`}
+                    width={56}
+                    height={56}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
                     <h3 className="font-bold text-navy text-sm">{item.city}, {item.country}</h3>

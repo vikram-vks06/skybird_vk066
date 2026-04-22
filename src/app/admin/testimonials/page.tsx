@@ -4,15 +4,16 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
+import AppImage from '@/components/ui/AppImage';
 
-interface Testimonial { _id: string; name: string; role: string; company: string; quote: string; isActive: boolean; order: number; }
+interface Testimonial { _id: string; name: string; role: string; company: string; quote: string; imageUrl?: string; isActive: boolean; order: number; }
 
 export default function AdminTestimonialsPage() {
   const [items, setItems] = useState<Testimonial[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchItems = async () => {
-    const res = await fetch('/api/testimonials');
+    const res = await fetch('/api/testimonials?all=1');
     const data = await res.json();
     setItems(Array.isArray(data) ? data : []);
     setLoading(false);
@@ -52,6 +53,15 @@ export default function AdminTestimonialsPage() {
           <div className="space-y-3">
             {items.map((item) => (
               <div key={item._id} className="bg-white rounded-2xl p-5 shadow-card flex items-start gap-4">
+                <div className="w-14 h-14 rounded-xl overflow-hidden shrink-0">
+                  <AppImage
+                    src={item.imageUrl || '/assets/images/no_image.png'}
+                    alt={`${item.name} photo`}
+                    width={56}
+                    height={56}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
                     <h3 className="font-bold text-navy text-sm">{item.name}</h3>
