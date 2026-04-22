@@ -22,6 +22,7 @@ export default function AdminLoginPage() {
     setLoading(false);
 
     if (res?.error) {
+      console.log(res.error);
       toast.error('Invalid admin credentials');
     } else {
       toast.success('Welcome, Admin!');
