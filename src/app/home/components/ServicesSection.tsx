@@ -65,7 +65,7 @@ const fallbackServices: ServiceCard[] = [
 
 const colSpanMap: Record<number, string> = { 1: 'lg:col-span-1', 2: 'lg:col-span-2' };
 const serviceNumbers = ['01', '02', '03', '04', '05', '06'];
-const serviceHighlights = ['Flights', 'Hotels', 'Transfers', 'Visas'];
+const serviceHighlights = ['Flights', 'Visas', 'Hotels', 'Transfers'];
 
 export default function ServicesSection() {
   const sectionRef = useRef<HTMLElement>(null);

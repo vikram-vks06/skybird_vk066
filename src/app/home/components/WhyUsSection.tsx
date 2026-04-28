@@ -116,11 +116,11 @@ export default function WhyUsSection() {
             <span
               className="inline-block px-3 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest text-navy bg-white border border-navy/10 shadow-sm"
             >
-              What We Do
+              Why Sky Birds
             </span>
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-navy leading-tight">
-              More Than a<br />
-              <span className="font-serif italic font-light" style={{ color: '#E8A020' }}>Travel Agent.</span>
+              Crafting Journeys <br />
+              <span className="font-serif italic font-light" style={{ color: '#E8A020' }}>Not Just Booking Trips.</span>
             </h2>
             <p className="text-navy/70 text-base leading-relaxed font-medium">
               We act as your in-house travel desk — proactive, accountable, and always aligned with your business goals.
