@@ -27,7 +27,9 @@ export default function Header() {
     } else {
       document.body.style.overflow = '';
     }
-    return () => { document.body.style.overflow = ''; };
+    return () => {
+      document.body.style.overflow = '';
+    };
   }, [menuOpen]);
 
   const handleNavClick = (href: string) => {
@@ -55,11 +57,8 @@ export default function Header() {
           }`}
         >
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 group" aria-label="Sky Birds home">
-            <AppLogo size={36} />
-            <span className="font-sans font-800 text-lg tracking-tight text-navy hidden sm:block" style={{ fontWeight: 800 }}>
-              Sky<span className="text-amber-brand">Birds</span>
-            </span>
+          <Link href="/" className="flex items-center group" aria-label="Sky Birds home">
+            <AppLogo width={168} className="h-auto" />
           </Link>
 
           {/* Desktop Nav */}
@@ -91,7 +90,13 @@ export default function Header() {
             >
               Contact Us
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                <path
+                  d="M2 7h10M8 3l4 4-4 4"
+                  stroke="currentColor"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               </svg>
             </button>
 
