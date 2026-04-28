@@ -112,9 +112,9 @@ export default function ContactSection() {
             {/* Contact details */}
             <div className="space-y-5">
               {[
-                { icon: 'PhoneIcon', label: '+91 98765 43210', sub: 'Mon–Sat, 9am–7pm IST' },
-                { icon: 'EnvelopeIcon', label: 'corporate@skybirds.in', sub: 'Response within 4 hours' },
-                { icon: 'MapPinIcon', label: 'Nariman Point, Mumbai — 400021', sub: 'Walk-ins welcome' },
+                { icon: 'PhoneIcon', label: '+91 92740 43135', sub: 'Mon–Sat, 9am–7pm IST' },
+                { icon: 'EnvelopeIcon', label: 'skybirds@skybirds.net', sub: 'Response within 4 hours' },
+                { icon: 'MapPinIcon', label: '301 Addor Ambition, Next to Indian Red Cross Shatbadi Bhavan, Nr. Navrang Circle, Navrangpura, Ahmedabad 380009', sub: 'Walk-ins welcome' },
               ].map((item) => (
                 <div key={item.label} className="flex gap-4 items-start">
                   <div
