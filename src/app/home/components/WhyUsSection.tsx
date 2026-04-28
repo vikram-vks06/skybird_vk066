@@ -69,8 +69,8 @@ export default function WhyUsSection() {
       <div className="grid lg:grid-cols-2 gap-16 md:gap-20 items-center">
 
         {/* Left — Testimonial Carousel in Circle with spinning border */}
-        <div className="relative opacity-100 flex flex-col items-center">
-          <div className="relative flex items-center justify-center">
+        <div className="relative opacity-100 flex flex-col items-center justify-center min-h-[520px]">
+          <div className="relative flex items-center justify-center w-[420px] h-[420px] max-w-full max-h-full">
             {/* Spinning dashed ring wraps only the testimonial circle */}
             <div
               className="absolute animate-spin-slow rounded-full border-2 border-dashed pointer-events-none"
@@ -83,7 +83,7 @@ export default function WhyUsSection() {
               }}
             />
             {/* Circular testimonial */}
-            <div className="aspect-square rounded-full overflow-hidden border-8 border-white shadow-card-lg relative z-10 flex items-center justify-center bg-[#F8F8F8] w-[420px] h-[420px] max-w-full max-h-full">
+            <div className="aspect-square rounded-full overflow-hidden border-8 border-white shadow-card-lg relative z-10 flex items-center justify-center bg-[#F8F8F8] w-full h-full">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={current}
@@ -98,27 +98,31 @@ export default function WhyUsSection() {
                 </motion.div>
               </AnimatePresence>
             </div>
-          </div>
-          {/* Rating & client image below */}
-          <div className="flex flex-col items-center mt-6">
-            <p className="font-serif italic text-3xl mb-1" style={{ color: '#E8A020' }}>{testimonials[current].rating}★</p>
-            <img src={testimonials[current].image} alt={testimonials[current].name} className="w-24 h-24 rounded-full object-cover border-4 border-navy shadow" />
+            {/* Client image - further down right, above ring */}
+            <div className="absolute z-20" style={{ bottom: '-56px', right: '-56px' }}>
+              <div className="flex flex-col items-center">
+                <span className="block rounded-full bg-white p-[5px]">
+                  <img src={testimonials[current].image} alt={testimonials[current].name} className="w-36 h-36 rounded-full object-cover shadow-xl" />
+                </span>
+                <p className="font-serif italic text-2xl mt-2 mb-0.5" style={{ color: '#E8A020' }}>{testimonials[current].rating}★</p>
+              </div>
+            </div>
           </div>
         </div>
 
         {/* Right — Differentiators */}
-        <div className="space-y-8">
+        <div className="space-y-8 bg-white rounded-3xl shadow-xl p-8 md:p-10 border border-navy/5">
           <div className="space-y-4">
             <span
-              className="inline-block px-3 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest text-white"
-              style={{ backgroundColor: '#0F1F3D' }}>
-              Why Sky Birds
+              className="inline-block px-3 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest text-navy bg-white border border-navy/10 shadow-sm"
+            >
+              What We Do
             </span>
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-navy leading-tight">
               More Than a<br />
               <span className="font-serif italic font-light" style={{ color: '#E8A020' }}>Travel Agent.</span>
             </h2>
-            <p className="text-navy/55 text-base leading-relaxed font-medium">
+            <p className="text-navy/70 text-base leading-relaxed font-medium">
               We act as your in-house travel desk — proactive, accountable, and always aligned with your business goals.
             </p>
           </div>
@@ -127,15 +131,14 @@ export default function WhyUsSection() {
             {differentiators.map((item) =>
               <div
                 key={item.title}
-                className="diff-item flex gap-5 items-start p-5 rounded-2xl hover:bg-bg-warm transition-colors duration-200 opacity-100">
+                className="diff-item flex gap-5 items-start p-5 rounded-2xl hover:shadow-xl transition-all duration-200 opacity-100 bg-white border border-navy/10">
                 <div
-                  className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
-                  style={{ backgroundColor: 'rgba(42,127,212,0.1)' }}>
-                  <Icon name={item.icon as Parameters<typeof Icon>[0]['name']} size={20} variant="outline" style={{ color: '#2A7FD4' }} />
+                  className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 bg-gradient-to-br from-[#E8A020]/10 to-[#2A7FD4]/10 shadow-sm">
+                  <Icon name={item.icon as Parameters<typeof Icon>[0]['name']} size={24} variant="outline" style={{ color: '#2A7FD4' }} />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-navy mb-1">{item.title}</h3>
-                  <p className="text-sm text-navy/55 leading-relaxed">{item.desc}</p>
+                  <h3 className="text-lg font-bold text-navy mb-1">{item.title}</h3>
+                  <p className="text-sm text-navy/60 leading-relaxed">{item.desc}</p>
                 </div>
               </div>
             )}
