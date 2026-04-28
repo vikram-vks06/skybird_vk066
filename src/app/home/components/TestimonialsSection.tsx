@@ -71,7 +71,7 @@ export default function OurTeamSection() {
             <span
               className="inline-block px-3 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest"
               style={{ backgroundColor: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.6)' }}>
-              The Minds Behind Your Seamless Journey
+              Your Dedicated Travel Advocates
             </span>
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white leading-tight">
               Meet the People<br />
