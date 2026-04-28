@@ -250,14 +250,13 @@ export default function ServicesSection() {
 
             <div className="space-y-5">
               <h2 className="svc-heading text-4xl font-bold leading-[1.02] tracking-tight text-navy opacity-0 md:text-5xl lg:text-6xl">
-                End-to-End Travel,
+                Your World, Simplified.
                 <br />
-                <span className="font-serif text-amber-brand italic font-light">One Partner.</span>
+                <span className="font-serif text-amber-brand italic font-light">One Partner. Every Destination.</span>
               </h2>
 
               <p className="svc-subtext max-w-2xl text-base font-medium leading-relaxed text-navy/60 opacity-0 md:text-lg">
-                From the first booking request to the final airport transfer, we manage the full
-                travel stack with one accountable team, one workflow, and zero handoff friction.
+                From the moment you plan to the moment you return, we manage your entire travel ecosystem. No multiple logins, no fragmented support—just one dedicated team ensuring your journey is seamless from start to finish.
               </p>
             </div>
 
