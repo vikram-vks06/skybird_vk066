@@ -71,7 +71,7 @@ export default function OurTeamSection() {
             <span
               className="inline-block px-3 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest"
               style={{ backgroundColor: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.6)' }}>
-              Our Team
+              The Minds Behind Your Seamless Journey
             </span>
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white leading-tight">
               Meet the People<br />
@@ -81,7 +81,7 @@ export default function OurTeamSection() {
             </h2>
           </div>
           <p className="text-sm max-w-xs uppercase tracking-wider leading-relaxed font-semibold" style={{ color: 'rgba(255,255,255,0.35)' }}>
-            Dedicated, experienced, and passionate about business travel.
+            Behind every successful boarding pass is a team of specialists. At Sky Bird, we aren't just travel agents; we are visa consultants, logistics experts, and problem solvers. Our team brings decades of combined experience in navigating complex global travel, ensuring that your paperwork is perfect and your itinerary is bulletproof.
           </p>
         </div>
 
