@@ -114,7 +114,7 @@ export default function ContactSection() {
               {[
                 { icon: 'PhoneIcon', label: '+91 92740 43135', sub: 'Mon–Sat, 9am–7pm IST' },
                 { icon: 'EnvelopeIcon', label: 'skybirds@skybirds.net', sub: 'Response within 4 hours' },
-                { icon: 'MapPinIcon', label: '301 Addor Ambition, <br>Next to Indian Red Cross Shatbadi Bhavan, <br>Nr. Navrang Circle, Navrangpura, Ahmedabad 380009', sub: 'Walk-ins welcome' },
+                { icon: 'MapPinIcon', label: '301 Addor Ambition, Next to Indian Red Cross Shatbadi Bhavan, Nr. Navrang Circle, Navrangpura, Ahmedabad 380009', sub: 'Walk-ins welcome' },
               ].map((item) => (
                 <div key={item.label} className="flex gap-4 items-start">
                   <div
