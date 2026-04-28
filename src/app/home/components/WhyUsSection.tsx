@@ -1,8 +1,29 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
-import AppImage from '@/components/ui/AppImage';
+import React, { useEffect, useRef, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Icon from '@/components/ui/AppIcon';
+// Simple testimonials array (replace with API if needed)
+const testimonials = [
+  {
+    text: 'Sky Birds made our business travel seamless and cost-effective. Highly recommended!',
+    name: 'Rahul Mehta',
+    image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a',
+    rating: 5
+  },
+  {
+    text: 'Excellent service and transparent pricing. Our team loved the experience.',
+    name: 'Priya Nair',
+    image: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e',
+    rating: 4.5
+  },
+  {
+    text: 'Professional, reliable, and always available. Sky Birds is our go-to travel partner.',
+    name: 'Arjun Krishnamurthy',
+    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d',
+    rating: 5
+  },
+];
 
 const differentiators = [
 {
@@ -25,85 +46,63 @@ const differentiators = [
 
 export default function WhyUsSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const imageRef = useRef<HTMLDivElement>(null);
-  const statsRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
+  const [current, setCurrent] = useState(0);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Auto-advance testimonial every 5 seconds
   useEffect(() => {
-    const initGsap = async () => {
-      const { gsap } = await import('gsap');
-      const { ScrollTrigger } = await import('gsap/ScrollTrigger');
-      gsap.registerPlugin(ScrollTrigger);
-
-      gsap.fromTo(
-        imageRef.current,
-        { x: -50, opacity: 0 },
-        {
-          x: 0, opacity: 1, duration: 1.2, ease: 'power3.out',
-          scrollTrigger: { trigger: imageRef.current, start: 'top 85%' }
-        }
-      );
-
-      gsap.fromTo(
-        statsRef.current,
-        { scale: 0.8, opacity: 0 },
-        {
-          scale: 1, opacity: 1, duration: 1, ease: 'back.out(1.5)',
-          scrollTrigger: { trigger: statsRef.current, start: 'top 85%' }
-        }
-      );
-
-      const items = listRef.current?.querySelectorAll('.diff-item');
-      items?.forEach((item, i) => {
-        gsap.fromTo(
-          item,
-          { x: 40, opacity: 0 },
-          {
-            x: 0, opacity: 1, duration: 0.7, delay: i * 0.12, ease: 'power3.out',
-            scrollTrigger: { trigger: item, start: 'top 90%' }
-          }
-        );
-      });
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => {
+      setCurrent((prev) => (prev + 1) % testimonials.length);
+    }, 5000);
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
-    initGsap();
-  }, []);
+  }, [current]);
 
   return (
     <section
       id="why-us"
       ref={sectionRef}
       className="max-w-7xl mx-auto w-full bg-white rounded-5xl shadow-card px-8 md:px-16 py-16 md:py-20">
-      
       <div className="grid lg:grid-cols-2 gap-16 md:gap-20 items-center">
-        {/* Left — Image with spinning border and floating card */}
-        <div ref={imageRef} className="relative opacity-100">
-          {/* Spinning dashed ring */}
-          <div
-            className="absolute animate-spin-slow rounded-full border-2 border-dashed pointer-events-none"
-            style={{
-              inset: '-20px',
-              borderColor: 'rgba(232,160,32,0.35)'
-            }} />
-          
 
-          {/* Circular image */}
-          <div className="aspect-square rounded-full overflow-hidden border-8 border-white shadow-card-lg relative z-10">
-            <AppImage
-              src="https://img.rocket.new/generatedImages/rocket_gen_img_19c4bcb0c-1775666453379.png"
-              alt="Professional corporate travel manager in suit reviewing itinerary on laptop, bright modern office, natural light, confident expression"
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 90vw, 45vw" />
-            
+        {/* Left — Testimonial Carousel in Circle with spinning border */}
+        <div className="relative opacity-100 flex flex-col items-center">
+          <div className="relative flex items-center justify-center">
+            {/* Spinning dashed ring wraps only the testimonial circle */}
+            <div
+              className="absolute animate-spin-slow rounded-full border-2 border-dashed pointer-events-none"
+              style={{
+                width: 'calc(100% + 32px)',
+                height: 'calc(100% + 32px)',
+                borderColor: 'rgba(232,160,32,0.35)',
+                left: '-16px',
+                top: '-16px',
+              }}
+            />
+            {/* Circular testimonial */}
+            <div className="aspect-square rounded-full overflow-hidden border-8 border-white shadow-card-lg relative z-10 flex items-center justify-center bg-[#F8F8F8] w-[420px] h-[420px] max-w-full max-h-full">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={current}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -30 }}
+                  transition={{ duration: 0.5 }}
+                  className="flex flex-col items-center justify-center h-full w-full p-8 text-center"
+                >
+                  <p className="font-serif italic text-lg md:text-2xl mb-4 text-navy">“{testimonials[current].text}”</p>
+                  <span className="font-bold text-navy text-base md:text-lg">{testimonials[current].name}</span>
+                </motion.div>
+              </AnimatePresence>
+            </div>
           </div>
-
-          {/* Floating glass card */}
-          <div
-            ref={statsRef}
-            className="absolute -bottom-8 -right-4 md:-right-10 glass-card p-6 rounded-3xl z-20 shadow-card-lg max-w-[200px] opacity-100">
-            
-            <p className="font-serif italic text-3xl mb-1" style={{ color: '#E8A020' }}>4.9★</p>
-            <p className="text-xs font-bold text-navy leading-snug">Average client satisfaction across 500+ corporate accounts</p>
+          {/* Rating & client image below */}
+          <div className="flex flex-col items-center mt-6">
+            <p className="font-serif italic text-3xl mb-1" style={{ color: '#E8A020' }}>{testimonials[current].rating}★</p>
+            <img src={testimonials[current].image} alt={testimonials[current].name} className="w-24 h-24 rounded-full object-cover border-4 border-navy shadow" />
           </div>
         </div>
 
@@ -113,7 +112,6 @@ export default function WhyUsSection() {
             <span
               className="inline-block px-3 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest text-white"
               style={{ backgroundColor: '#0F1F3D' }}>
-              
               Why Sky Birds
             </span>
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-navy leading-tight">
@@ -127,14 +125,12 @@ export default function WhyUsSection() {
 
           <div ref={listRef} className="space-y-5">
             {differentiators.map((item) =>
-            <div
-              key={item.title}
-              className="diff-item flex gap-5 items-start p-5 rounded-2xl hover:bg-bg-warm transition-colors duration-200 opacity-100">
-              
+              <div
+                key={item.title}
+                className="diff-item flex gap-5 items-start p-5 rounded-2xl hover:bg-bg-warm transition-colors duration-200 opacity-100">
                 <div
-                className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
-                style={{ backgroundColor: 'rgba(42,127,212,0.1)' }}>
-                
+                  className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
+                  style={{ backgroundColor: 'rgba(42,127,212,0.1)' }}>
                   <Icon name={item.icon as Parameters<typeof Icon>[0]['name']} size={20} variant="outline" style={{ color: '#2A7FD4' }} />
                 </div>
                 <div>
@@ -146,6 +142,7 @@ export default function WhyUsSection() {
           </div>
         </div>
       </div>
-    </section>);
+    </section>
+  );
 
 }

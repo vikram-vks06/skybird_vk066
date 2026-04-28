@@ -20,15 +20,15 @@ export default function Footer() {
             { label: 'Services', href: '#services' },
             { label: 'Destinations', href: '#destinations' },
             { label: 'Why Us', href: '#why-us' },
-            { label: 'Privacy', href: '#' },
-            { label: 'Terms', href: '#' },
-          ]?.map((link) => (
+            { label: 'Privacy', href: '/privacy-policy' },
+            { label: 'Terms', href: '/terms' },
+          ].map((link) => (
             <Link
-              key={link?.label}
-              href={link?.href}
+              key={link.label}
+              href={link.href}
               className="text-sm font-medium text-navy/50 hover:text-navy transition-colors duration-200 focus:outline-none focus:underline min-h-[44px] flex items-center"
             >
-              {link?.label}
+              {link.label}
             </Link>
           ))}
         </nav>

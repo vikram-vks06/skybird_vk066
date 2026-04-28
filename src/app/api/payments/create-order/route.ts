@@ -12,11 +12,6 @@ const razorpay = new Razorpay({
 
 export async function POST(req: NextRequest) {
   try {
-    const session = await auth();
-    if (!session?.user?.id || session.user.role !== 'client') {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
     const { bookingId } = await req.json();
     if (!bookingId) {
       return NextResponse.json({ error: 'Booking ID is required' }, { status: 400 });
@@ -26,10 +21,6 @@ export async function POST(req: NextRequest) {
     const booking = await Booking.findById(bookingId);
     if (!booking) {
       return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
-    }
-
-    if (booking.clientId.toString() !== session.user.id) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const order = await razorpay.orders.create({
@@ -42,10 +33,9 @@ export async function POST(req: NextRequest) {
     booking.razorpayOrderId = order.id;
     await booking.save();
 
-    // Create payment record
+    // Create payment record (clientId is optional for public payments)
     await Payment.create({
       bookingId: booking._id,
-      clientId: session.user.id,
       amount: booking.totalAmount,
       razorpayOrderId: order.id,
     });

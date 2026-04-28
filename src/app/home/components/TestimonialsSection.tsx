@@ -2,68 +2,37 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import AppImage from '@/components/ui/AppImage';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import SwiperCore, { EffectCoverflow, Pagination, Autoplay } from 'swiper';
+import 'swiper/css';
+import 'swiper/css/effect-coverflow';
+import 'swiper/css/pagination';
+// Register Swiper modules for v9
+SwiperCore.use([EffectCoverflow, Pagination, Autoplay]);
 
-interface Testimonial {
+interface TeamMember {
   name: string;
-  role: string;
-  company: string;
-  quote: string;
-  image: string;
-  alt: string;
+  designation: string;
+  bio: string;
+  imageUrl: string;
   accentColor: string;
 }
 
-const fallbackTestimonials: Testimonial[] = [
-{
-  name: 'Rahul Mehta',
-  role: 'VP Operations',
-  company: 'Tata Consultancy Services',
-  quote: '"Sky Birds cut our travel spend by 22% in the first quarter — without reducing comfort. Their itemized invoices finally gave us clarity on where the budget was going."',
-  image: "https://images.unsplash.com/photo-1560250097-0b93528c311a",
-  alt: 'Professional Indian man in business suit, confident corporate headshot',
-  accentColor: '#E8A020'
-},
-{
-  name: 'Priya Nair',
-  role: 'Head of HR & Admin',
-  company: 'Infosys BPM',
-  quote: '"We manage travel for 300+ employees. Sky Birds assigned us a dedicated coordinator who handles everything from visa letters to airport pickups. Genuinely seamless."',
-  image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e",
-  alt: 'Professional Indian woman in corporate attire, confident business headshot',
-  accentColor: '#2A7FD4'
-},
-{
-  name: 'Arjun Krishnamurthy',
-  role: 'Managing Director',
-  company: 'Mahindra Logistics',
-  quote: '"Three international conferences, six cities, forty delegates — Sky Birds handled it all without a single escalation. That reliability is priceless for us."',
-  image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d",
-  alt: 'Senior Indian business executive in formal suit, authoritative corporate portrait',
-  accentColor: '#E8A020'
-}];
 
-
-export default function TestimonialsSection() {
+export default function OurTeamSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const [testimonials, setTestimonials] = useState<Testimonial[]>(fallbackTestimonials);
+  const [team, setTeam] = useState<TeamMember[]>([]);
 
   useEffect(() => {
-    fetch('/api/testimonials').then(r => r.json()).then((data) => {
+    fetch('/api/team').then(r => r.json()).then((data) => {
       if (Array.isArray(data) && data.length > 0) {
-        setTestimonials(data.map((t: { name: string; role: string; company: string; quote: string; imageUrl?: string; accentColor?: string }) => {
-          const nameKey = (t.name || '').trim().toLowerCase();
-          const fallback = fallbackTestimonials.find((item) => nameKey.startsWith(item.name.toLowerCase().split(' ')[0]));
-
-          return ({
-            name: t.name,
-            role: t.role,
-            company: t.company,
-            quote: t.quote,
-            image: (typeof t.imageUrl === 'string' && t.imageUrl.trim()) || fallback?.image || '/assets/images/no_image.png',
-            alt: `${t.name} photo`,
-            accentColor: t.accentColor || fallback?.accentColor || '#4F8BD2',
-          });
-        }));
+        setTeam(data.map((t: any) => ({
+          name: t.name,
+          designation: t.designation,
+          bio: t.bio,
+          imageUrl: t.imageUrl,
+          accentColor: t.accentColor || '#2A7FD4',
+        })));
       }
     }).catch(() => {});
   }, []);
@@ -74,7 +43,7 @@ export default function TestimonialsSection() {
       const { ScrollTrigger } = await import('gsap/ScrollTrigger');
       gsap.registerPlugin(ScrollTrigger);
 
-      const cards = sectionRef.current?.querySelectorAll('.testi-card');
+      const cards = sectionRef.current?.querySelectorAll('.team-card');
       cards?.forEach((card, i) => {
         gsap.fromTo(
           card,
@@ -91,11 +60,10 @@ export default function TestimonialsSection() {
 
   return (
     <section
-      id="testimonials"
+      id="our-team"
       ref={sectionRef}
       className="max-w-7xl mx-auto w-full rounded-5xl overflow-hidden shadow-card"
       style={{ backgroundColor: '#0F1F3D' }}>
-      
       <div className="px-8 md:px-16 py-16 md:py-20">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
@@ -103,60 +71,71 @@ export default function TestimonialsSection() {
             <span
               className="inline-block px-3 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest"
               style={{ backgroundColor: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.6)' }}>
-              
-              Client Stories
+              Our Team
             </span>
             <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white leading-tight">
-              What Corporate India<br />
+              Meet the People<br />
               <span className="font-serif italic font-light" style={{ color: '#E8A020' }}>
-                Says About Us.
+                Behind Sky Birds
               </span>
             </h2>
           </div>
           <p className="text-sm max-w-xs uppercase tracking-wider leading-relaxed font-semibold" style={{ color: 'rgba(255,255,255,0.35)' }}>
-            Real outcomes from real business travel managers across India.
+            Dedicated, experienced, and passionate about business travel.
           </p>
         </div>
 
-        {/* Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {testimonials.map((t) =>
-          <div
-            key={t.name}
-            className="testi-card rounded-4xl p-8 space-y-6 opacity-100 transition-all duration-500 hover:scale-[1.02]"
-            style={{ backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
-            
-              {/* Image */}
-              <div className="aspect-square rounded-2xl overflow-hidden">
-                <AppImage
-                src={t.image}
-                alt={t.alt}
-                width={300}
-                height={300}
-                className="w-full h-full object-cover" />
-              
-              </div>
-
-              {/* Quote */}
-              <div>
-                <svg className="mb-3 opacity-30" width="28" height="20" viewBox="0 0 28 20" fill="white" aria-hidden="true">
-                  <path d="M0 20V12.5C0 5.833 3.167 1.667 9.5 0L11 2.5C8.167 3.5 6.583 5.417 6.25 8.25H11V20H0zm17 0V12.5C17 5.833 20.167 1.667 26.5 0L28 2.5C25.167 3.5 23.583 5.417 23.25 8.25H28V20H17z" />
-                </svg>
-                <p className="text-sm leading-relaxed font-serif italic" style={{ color: 'rgba(255,255,255,0.8)' }}>
-                  {t.quote}
+        {/* Cards Carousel */}
+        <Swiper
+          modules={[EffectCoverflow, Pagination, Autoplay]}
+          effect="coverflow"
+          grabCursor={true}
+          centeredSlides={true}
+          slidesPerView={1}
+          loop={true}
+          autoplay={{ delay: 2500, disableOnInteraction: false }}
+          coverflowEffect={{
+            rotate: 30,
+            stretch: 0,
+            depth: 100,
+            modifier: 1,
+            slideShadows: true,
+          }}
+          pagination={{ clickable: true }}
+          breakpoints={{
+            768: { slidesPerView: 2 },
+            1024: { slidesPerView: 3 },
+          }}
+          className="team-swiper"
+        >
+          {team.map((member) => (
+            <SwiperSlide key={member.name}>
+              <div
+                className="team-card rounded-4xl p-8 space-y-6 opacity-100 transition-all duration-500 hover:scale-[1.02]"
+                style={{ backgroundColor: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                {/* Image */}
+                <div className="aspect-square rounded-2xl overflow-hidden">
+                  <AppImage
+                    src={member.imageUrl}
+                    alt={member.name}
+                    width={300}
+                    height={300}
+                    className="w-full h-full object-cover" />
+                </div>
+                {/* Name & Designation */}
+                <div>
+                  <p className="font-bold text-white text-base">{member.name}</p>
+                  <p className="text-xs font-medium" style={{ color: member.accentColor }}>{member.designation}</p>
+                </div>
+                {/* Bio */}
+                <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.7)' }}>
+                  {member.bio}
                 </p>
               </div>
-
-              {/* Author */}
-              <div>
-                <p className="font-bold text-white text-base">{t.name}</p>
-                <p className="text-xs font-medium" style={{ color: t.accentColor }}>{t.role}</p>
-                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>{t.company}</p>
-              </div>
-            </div>
-          )}
-        </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
-    </section>);
-
+    </section>
+  );
 }

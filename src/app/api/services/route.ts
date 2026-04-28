@@ -9,8 +9,13 @@ export async function GET() {
     const services = await Service.find({ isActive: true }).sort({ order: 1 });
     return NextResponse.json(services);
   } catch (error) {
-    console.error('Services fetch error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    if (error instanceof Error) {
+      console.error('Services fetch error:', error.message, error.stack);
+      return NextResponse.json({ error: error.message, stack: error.stack }, { status: 500 });
+    } else {
+      console.error('Services fetch error:', error);
+      return NextResponse.json({ error: String(error) }, { status: 500 });
+    }
   }
 }
 

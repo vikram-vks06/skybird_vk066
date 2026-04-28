@@ -5,19 +5,10 @@ import { auth } from '@/lib/auth';
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = await auth();
-    if (!session?.user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-
     const { id } = await params;
     await connectDB();
     const booking = await Booking.findById(id).populate('clientId', 'name email company phone');
     if (!booking) return NextResponse.json({ error: 'Not found' }, { status: 404 });
-
-    // Clients can only view their own bookings
-    if (session.user.role === 'client' && booking.clientId._id.toString() !== session.user.id) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
     return NextResponse.json(booking);
   } catch (error) {
     console.error('Booking fetch error:', error);

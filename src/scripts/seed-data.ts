@@ -1,12 +1,56 @@
 import mongoose from 'mongoose';
 
-const MONGODB_URI = 'mongodb://localhost:27017/skybirds';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/skybirds';
 
 async function seedData() {
   await mongoose.connect(MONGODB_URI);
   console.log('Connected to MongoDB');
 
   // Testimonials
+    // Team Members
+    const TeamMemberSchema = new mongoose.Schema({
+      name: String,
+      designation: String,
+      bio: String,
+      imageUrl: String,
+      accentColor: String,
+      isActive: { type: Boolean, default: true },
+      order: Number,
+      createdAt: { type: Date, default: Date.now },
+    });
+    const TeamMember = mongoose.models.TeamMember || mongoose.model('TeamMember', TeamMemberSchema);
+    // Force delete all team members before seeding
+    await TeamMember.deleteMany({});
+    await TeamMember.insertMany([
+      {
+        name: 'Amit Sharma',
+        designation: 'Founder & CEO',
+        bio: '20+ years in corporate travel, passionate about seamless journeys.',
+        imageUrl: '',
+        accentColor: '#2A7FD4',
+        isActive: true,
+        order: 1,
+      },
+      {
+        name: 'Neha Verma',
+        designation: 'Head of Operations',
+        bio: 'Expert in logistics and client relations.',
+        imageUrl: '',
+        accentColor: '#E8A020',
+        isActive: true,
+        order: 2,
+      },
+      {
+        name: 'Rohit Singh',
+        designation: 'Senior Travel Consultant',
+        bio: 'Specialist in international bookings and MICE.',
+        imageUrl: '',
+        accentColor: '#F0B830',
+        isActive: true,
+        order: 3,
+      },
+    ]);
+    console.log('✓ Team members force-seeded');
   const TestimonialSchema = new mongoose.Schema({
     name: String, role: String, company: String, quote: String, imageUrl: String,
     accentColor: String, isActive: { type: Boolean, default: true }, order: Number,

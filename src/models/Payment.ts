@@ -2,7 +2,7 @@ import mongoose, { Schema, Document, Types } from 'mongoose';
 
 export interface IPayment extends Document {
   bookingId: Types.ObjectId;
-  clientId: Types.ObjectId;
+  clientId?: Types.ObjectId;
   amount: number;
   currency: string;
   razorpayOrderId: string;
@@ -14,7 +14,7 @@ export interface IPayment extends Document {
 
 const PaymentSchema = new Schema<IPayment>({
   bookingId: { type: Schema.Types.ObjectId, ref: 'Booking', required: true },
-  clientId: { type: Schema.Types.ObjectId, ref: 'Client', required: true },
+  clientId: { type: Schema.Types.ObjectId, ref: 'Client', required: false },
   amount: { type: Number, required: true },
   currency: { type: String, default: 'INR' },
   razorpayOrderId: { type: String, required: true },

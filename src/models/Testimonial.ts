@@ -6,6 +6,7 @@ export interface ITestimonial extends Document {
   company: string;
   quote: string;
   imageUrl: string;
+  rating: number;
   accentColor: string;
   isActive: boolean;
   order: number;
@@ -18,6 +19,7 @@ const TestimonialSchema = new Schema<ITestimonial>({
   company: { type: String, required: true },
   quote: { type: String, required: true },
   imageUrl: { type: String, default: '' },
+  rating: { type: Number, default: 5, min: 1, max: 5 },
   accentColor: { type: String, default: '#E8A020' },
   isActive: { type: Boolean, default: true },
   order: { type: Number, default: 0 },

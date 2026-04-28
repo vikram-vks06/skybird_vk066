@@ -53,7 +53,10 @@ export default function AdminBookingsPage() {
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-bold text-navy">All Bookings</h2>
-          <span className="text-sm text-navy/40 font-semibold">{items.length} total</span>
+          <div className="flex items-center gap-3">
+            <span className="text-sm text-navy/40 font-semibold">{items.length} total</span>
+            <Link href="/admin/bookings/new" className="px-4 py-2 rounded-full bg-navy text-white font-bold text-sm shadow hover:bg-navy/90 transition-all">+ Booking Form</Link>
+          </div>
         </div>
 
         <div className="flex gap-2 mb-6 flex-wrap">
@@ -93,6 +96,19 @@ export default function AdminBookingsPage() {
                       <option value="cancelled">Cancelled</option>
                     </select>
                     <Link href={`/admin/bookings/${b._id}`} className="px-3 py-1.5 rounded-lg text-xs font-bold bg-sky-brand/10 text-sky-brand">View</Link>
+                    {b.status === 'pending' && (
+                      <Link href={`/admin/bookings/${b._id}/edit`} className="px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-400/10 text-amber-600 border border-amber-400/20 hover:bg-amber-400/20 transition">Edit</Link>
+                    )}
+                    <button
+                      className="px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-brand/10 text-amber-brand border border-amber-brand/20 hover:bg-amber-brand/20 transition"
+                      onClick={() => {
+                        const url = `${window.location.origin}/pay/${b._id}`;
+                        navigator.clipboard.writeText(url);
+                        toast.success('Payment link copied!');
+                      }}
+                    >
+                      Send Payment Link
+                    </button>
                   </div>
                 </div>
               </div>

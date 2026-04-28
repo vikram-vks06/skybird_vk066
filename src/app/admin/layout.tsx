@@ -8,6 +8,7 @@ import Link from 'next/link';
 const navItems = [
   { label: 'Dashboard', href: '/admin', icon: '📊' },
   { label: 'Testimonials', href: '/admin/testimonials', icon: '💬' },
+  { label: 'Our Team', href: '/admin/team', icon: '🧑‍🤝‍🧑' },
   { label: 'Destinations', href: '/admin/destinations', icon: '🌍' },
   { label: 'Services', href: '/admin/services', icon: '⚙️' },
   { label: 'Contacts', href: '/admin/contacts', icon: '📧' },

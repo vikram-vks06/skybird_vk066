@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connectDB } from '@/lib/mongodb';
-import Testimonial from '@/models/Testimonial';
 import { auth } from '@/lib/auth';
+import { connectDB } from '@/lib/mongodb';
+import TeamMember from '@/models/TeamMember';
 import { saveUploadedImage } from '@/lib/upload';
 
 export async function GET(req: NextRequest) {
@@ -16,11 +16,16 @@ export async function GET(req: NextRequest) {
     }
 
     await connectDB();
-    const testimonials = await Testimonial.find(showAll ? {} : { isActive: true }).sort({ order: 1, createdAt: -1 });
-    return NextResponse.json(testimonials);
+    const team = await TeamMember.find(showAll ? {} : { isActive: true }).sort({ order: 1, createdAt: -1 });
+    return NextResponse.json(team);
   } catch (error) {
-    console.error('Testimonials fetch error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    if (error instanceof Error) {
+      console.error('Team fetch error:', error.message, error.stack);
+      return NextResponse.json({ error: error.message, stack: error.stack }, { status: 500 });
+    } else {
+      console.error('Team fetch error:', error);
+      return NextResponse.json({ error: String(error) }, { status: 500 });
+    }
   }
 }
 
@@ -40,17 +45,15 @@ export async function POST(req: NextRequest) {
       let imageUrl = String(formData.get('imageUrl') || '').trim();
 
       if (image instanceof File && image.size > 0) {
-        imageUrl = await saveUploadedImage(image, 'testimonials');
+        imageUrl = await saveUploadedImage(image, 'team');
       }
 
       data = {
         name: String(formData.get('name') || ''),
-        role: String(formData.get('role') || ''),
-        company: String(formData.get('company') || ''),
-        quote: String(formData.get('quote') || ''),
+        designation: String(formData.get('designation') || ''),
+        bio: String(formData.get('bio') || ''),
         imageUrl,
-        rating: Number(formData.get('rating') || 5),
-        accentColor: String(formData.get('accentColor') || '#4F8BD2'),
+        accentColor: String(formData.get('accentColor') || '#2A7FD4'),
         isActive: String(formData.get('isActive') || 'true') === 'true',
         order: Number(formData.get('order') || 0),
       };
@@ -59,10 +62,10 @@ export async function POST(req: NextRequest) {
     }
 
     await connectDB();
-    const testimonial = await Testimonial.create(data);
-    return NextResponse.json(testimonial, { status: 201 });
+    const teamMember = await TeamMember.create(data);
+    return NextResponse.json(teamMember, { status: 201 });
   } catch (error) {
-    console.error('Testimonial create error:', error);
+    console.error('Team create error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
