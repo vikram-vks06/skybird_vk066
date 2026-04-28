@@ -81,7 +81,7 @@ export default function OurTeamSection() {
             </h2>
           </div>
           <p className="text-sm max-w-xs uppercase tracking-wider leading-relaxed font-semibold" style={{ color: 'rgba(255,255,255,0.35)' }}>
-            Behind every successful boarding pass is a team of specialists. At Sky Bird, we aren't just travel agents; we are visa consultants, logistics experts, and problem solvers. Our team brings decades of combined experience in navigating complex global travel, ensuring that your paperwork is perfect and your itinerary is bulletproof.
+            We bring decades of experience to the table—handling complex visas and logistics so you don't have to. Flawless paperwork. Bulletproof itineraries. Zero stress.
           </p>
         </div>
 
