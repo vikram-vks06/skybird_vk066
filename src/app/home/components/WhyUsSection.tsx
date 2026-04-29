@@ -111,7 +111,7 @@ export default function WhyUsSection() {
         </div>
 
         {/* Right — Differentiators */}
-        <div className="space-y-8 bg-white rounded-3xl shadow-xl p-8 md:p-10 border border-navy/5">
+        <div className="space-y-8 bg-white rounded-3xl p-8 md:p-10">
           <div className="space-y-4">
             <span
               className="inline-block px-3 py-1 rounded-md text-[10px] font-bold uppercase tracking-widest text-navy bg-white border border-navy/10 shadow-sm"

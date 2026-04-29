@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
+import AppLogo from '@/components/ui/AppLogo';
 
 function ResetPasswordContent() {
   const searchParams = useSearchParams();
@@ -17,8 +18,14 @@ function ResetPasswordContent() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password.length < 6) { toast.error('Password must be at least 6 characters'); return; }
-    if (password !== confirmPassword) { toast.error('Passwords do not match'); return; }
+    if (password.length < 6) {
+      toast.error('Password must be at least 6 characters');
+      return;
+    }
+    if (password !== confirmPassword) {
+      toast.error('Passwords do not match');
+      return;
+    }
 
     setLoading(true);
     try {
@@ -47,7 +54,9 @@ function ResetPasswordContent() {
       <div className="min-h-screen bg-bg flex items-center justify-center px-6">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-navy mb-4">Invalid Link</h2>
-          <Link href="/forgot-password" className="text-sm font-bold" style={{ color: '#2A7FD4' }}>Request a new reset link</Link>
+          <Link href="/forgot-password" className="text-sm font-bold" style={{ color: '#2A7FD4' }}>
+            Request a new reset link
+          </Link>
         </div>
       </div>
     );
@@ -55,25 +64,50 @@ function ResetPasswordContent() {
 
   return (
     <div className="min-h-screen bg-bg flex items-center justify-center px-6">
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-md w-full">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="max-w-md w-full"
+      >
         <Link href="/" className="inline-block mb-10">
-          <span className="font-sans text-2xl tracking-tight text-navy" style={{ fontWeight: 800 }}>
-            Sky<span style={{ color: '#E8A020' }}>Birds</span>
-          </span>
+          <AppLogo width={156} className="h-auto" />
         </Link>
         <div className="bg-white rounded-4xl p-10 shadow-card">
           <h2 className="text-2xl font-bold text-navy mb-2">Reset Password</h2>
           <p className="text-navy/50 text-sm mb-8">Enter your new password below.</p>
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-1.5">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-navy/50">New Password</label>
-              <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Min. 6 characters" className="form-input" required />
+              <label className="text-[10px] font-bold uppercase tracking-widest text-navy/50">
+                New Password
+              </label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Min. 6 characters"
+                className="form-input"
+                required
+              />
             </div>
             <div className="space-y-1.5">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-navy/50">Confirm Password</label>
-              <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="••••••••" className="form-input" required />
+              <label className="text-[10px] font-bold uppercase tracking-widest text-navy/50">
+                Confirm Password
+              </label>
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="••••••••"
+                className="form-input"
+                required
+              />
             </div>
-            <button type="submit" disabled={loading} className="w-full py-4 rounded-2xl text-white font-bold text-sm transition-all hover:shadow-card-lg disabled:opacity-50" style={{ backgroundColor: '#0F1F3D' }}>
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-4 rounded-2xl text-white font-bold text-sm transition-all hover:shadow-card-lg disabled:opacity-50"
+              style={{ backgroundColor: '#0F1F3D' }}
+            >
               {loading ? 'Resetting...' : 'Reset Password'}
             </button>
           </form>
@@ -85,7 +119,13 @@ function ResetPasswordContent() {
 
 export default function ResetPasswordPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-bg flex items-center justify-center"><p className="text-navy/50">Loading...</p></div>}>
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-bg flex items-center justify-center">
+          <p className="text-navy/50">Loading...</p>
+        </div>
+      }
+    >
       <ResetPasswordContent />
     </Suspense>
   );

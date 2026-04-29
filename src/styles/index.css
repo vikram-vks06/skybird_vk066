@@ -1,1 +1,19 @@
 @import './tailwind.css';
+
+/* Smooth fade/slide for team section */
+.opacity-0 {
+	opacity: 0 !important;
+	transition: opacity 0.4s, transform 0.4s;
+}
+.opacity-100 {
+	opacity: 1 !important;
+	transition: opacity 0.4s, transform 0.4s;
+}
+.translate-y-4 {
+	transform: translateY(1rem) !important;
+	transition: opacity 0.4s, transform 0.4s;
+}
+.translate-y-0 {
+	transform: translateY(0) !important;
+	transition: opacity 0.4s, transform 0.4s;
+}

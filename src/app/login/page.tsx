@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
+import AppLogo from '@/components/ui/AppLogo';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -16,7 +17,10 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !password) { toast.error('Please fill all fields'); return; }
+    if (!email || !password) {
+      toast.error('Please fill all fields');
+      return;
+    }
 
     setLoading(true);
     const res = await signIn('client-login', { email, password, redirect: false });
@@ -33,16 +37,23 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-bg flex">
       {/* Left — Branding */}
-      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden" style={{ backgroundColor: '#0F1F3D' }}>
+      <div
+        className="hidden lg:flex lg:w-1/2 relative overflow-hidden"
+        style={{ backgroundColor: '#0F1F3D' }}
+      >
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 left-20 w-72 h-72 rounded-full" style={{ background: 'radial-gradient(circle, #E8A020 0%, transparent 70%)' }} />
-          <div className="absolute bottom-20 right-20 w-96 h-96 rounded-full" style={{ background: 'radial-gradient(circle, #2A7FD4 0%, transparent 70%)' }} />
+          <div
+            className="absolute top-20 left-20 w-72 h-72 rounded-full"
+            style={{ background: 'radial-gradient(circle, #E8A020 0%, transparent 70%)' }}
+          />
+          <div
+            className="absolute bottom-20 right-20 w-96 h-96 rounded-full"
+            style={{ background: 'radial-gradient(circle, #2A7FD4 0%, transparent 70%)' }}
+          />
         </div>
         <div className="relative z-10 flex flex-col justify-center px-16 py-20">
-          <Link href="/" className="mb-12">
-            <span className="font-sans text-3xl tracking-tight text-white" style={{ fontWeight: 800 }}>
-              Sky<span style={{ color: '#E8A020' }}>Birds</span>
-            </span>
+          <Link href="/" className="mb-12 inline-block">
+            <AppLogo width={188} className="h-auto" />
           </Link>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -50,8 +61,11 @@ export default function LoginPage() {
             transition={{ duration: 0.6 }}
             className="text-5xl font-bold text-white leading-tight mb-6"
           >
-            Welcome<br />
-            <span className="font-serif italic font-light" style={{ color: '#E8A020' }}>Back.</span>
+            Welcome
+            <br />
+            <span className="font-serif italic font-light" style={{ color: '#E8A020' }}>
+              Back.
+            </span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -59,7 +73,8 @@ export default function LoginPage() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-white/50 text-base max-w-sm leading-relaxed"
           >
-            Sign in to manage your bookings, track your trips, and access exclusive corporate travel deals.
+            Sign in to manage your bookings, track your trips, and access exclusive corporate travel
+            deals.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -67,10 +82,16 @@ export default function LoginPage() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="flex items-center gap-8 mt-16"
           >
-            {[{ stat: '500+', label: 'Clients' }, { stat: '50+', label: 'Destinations' }, { stat: '24/7', label: 'Support' }].map((item) => (
+            {[
+              { stat: '500+', label: 'Clients' },
+              { stat: '50+', label: 'Destinations' },
+              { stat: '24/7', label: 'Support' },
+            ].map((item) => (
               <div key={item.label}>
                 <p className="text-2xl font-bold text-white">{item.stat}</p>
-                <p className="text-xs text-white/40 font-semibold uppercase tracking-wider">{item.label}</p>
+                <p className="text-xs text-white/40 font-semibold uppercase tracking-wider">
+                  {item.label}
+                </p>
               </div>
             ))}
           </motion.div>
@@ -86,22 +107,24 @@ export default function LoginPage() {
           className="w-full max-w-md"
         >
           <div className="lg:hidden mb-10">
-            <Link href="/">
-              <span className="font-sans text-2xl tracking-tight text-navy" style={{ fontWeight: 800 }}>
-                Sky<span style={{ color: '#E8A020' }}>Birds</span>
-              </span>
+            <Link href="/" className="inline-block">
+              <AppLogo width={156} className="h-auto" />
             </Link>
           </div>
 
           <h2 className="text-3xl font-bold text-navy mb-2">Sign In</h2>
           <p className="text-navy/50 text-sm mb-8">
             Don&apos;t have an account?{' '}
-            <Link href="/register" className="font-bold" style={{ color: '#2A7FD4' }}>Create one</Link>
+            <Link href="/register" className="font-bold" style={{ color: '#2A7FD4' }}>
+              Create one
+            </Link>
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-1.5">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-navy/50">Email Address</label>
+              <label className="text-[10px] font-bold uppercase tracking-widest text-navy/50">
+                Email Address
+              </label>
               <input
                 type="email"
                 value={email}
@@ -113,7 +136,9 @@ export default function LoginPage() {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-[10px] font-bold uppercase tracking-widest text-navy/50">Password</label>
+              <label className="text-[10px] font-bold uppercase tracking-widest text-navy/50">
+                Password
+              </label>
               <div className="relative">
                 <input
                   type={showPassword ? 'text' : 'password'}
@@ -134,7 +159,11 @@ export default function LoginPage() {
             </div>
 
             <div className="flex items-center justify-end">
-              <Link href="/forgot-password" className="text-sm font-semibold" style={{ color: '#2A7FD4' }}>
+              <Link
+                href="/forgot-password"
+                className="text-sm font-semibold"
+                style={{ color: '#2A7FD4' }}
+              >
                 Forgot password?
               </Link>
             </div>
@@ -148,18 +177,35 @@ export default function LoginPage() {
               {loading ? (
                 <span className="flex items-center justify-center gap-2">
                   <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"/>
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                      fill="none"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                    />
                   </svg>
                   Signing in...
                 </span>
-              ) : 'Sign In'}
+              ) : (
+                'Sign In'
+              )}
             </button>
           </form>
 
           <p className="text-center text-xs text-navy/30 mt-8">
             Admin?{' '}
-            <Link href="/admin/login" className="font-semibold text-navy/50 hover:text-navy transition-colors">
+            <Link
+              href="/admin/login"
+              className="font-semibold text-navy/50 hover:text-navy transition-colors"
+            >
               Sign in here
             </Link>
           </p>

@@ -1,4 +1,6 @@
 import nodemailer from 'nodemailer';
+import fs from 'fs';
+import path from 'path';
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST || 'smtp.gmail.com',
@@ -9,6 +11,24 @@ const transporter = nodemailer.createTransport({
     pass: process.env.SMTP_PASSWORD,
   },
 });
+
+const embeddedLogoDataUri = (() => {
+  try {
+    const logoPath = path.join(process.cwd(), 'public', 'assets', 'images', 'skybird-logo.png');
+    const logoBuffer = fs.readFileSync(logoPath);
+    return `data:image/png;base64,${logoBuffer.toString('base64')}`;
+  } catch {
+    return null;
+  }
+})();
+
+function emailBrandMarkup() {
+  if (embeddedLogoDataUri) {
+    return `<img src="${embeddedLogoDataUri}" alt="Sky Bird" style="width: 180px; height: auto; display: inline-block;" />`;
+  }
+
+  return `<h1 style="color: #0F1F3D; font-size: 28px; margin: 0;">Sky<span style="color: #E8A020;">Birds</span></h1>`;
+}
 
 interface EmailOptions {
   to: string;
@@ -29,7 +49,7 @@ export function verificationEmailTemplate(name: string, verifyUrl: string) {
   return `
     <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #FAF9F6; padding: 40px 24px;">
       <div style="text-align: center; margin-bottom: 32px;">
-        <h1 style="color: #0F1F3D; font-size: 28px; margin: 0;">Sky<span style="color: #E8A020;">Birds</span></h1>
+        ${emailBrandMarkup()}
       </div>
       <div style="background: white; border-radius: 16px; padding: 40px 32px; box-shadow: 0 4px 24px rgba(15,31,61,0.08);">
         <h2 style="color: #0F1F3D; font-size: 22px; margin: 0 0 16px;">Verify Your Email</h2>
@@ -49,7 +69,7 @@ export function resetPasswordEmailTemplate(name: string, resetUrl: string) {
   return `
     <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #FAF9F6; padding: 40px 24px;">
       <div style="text-align: center; margin-bottom: 32px;">
-        <h1 style="color: #0F1F3D; font-size: 28px; margin: 0;">Sky<span style="color: #E8A020;">Birds</span></h1>
+        ${emailBrandMarkup()}
       </div>
       <div style="background: white; border-radius: 16px; padding: 40px 32px; box-shadow: 0 4px 24px rgba(15,31,61,0.08);">
         <h2 style="color: #0F1F3D; font-size: 22px; margin: 0 0 16px;">Reset Your Password</h2>
@@ -65,11 +85,19 @@ export function resetPasswordEmailTemplate(name: string, resetUrl: string) {
   `;
 }
 
-export function contactNotificationTemplate(data: { fullName: string; email: string; phone: string; company: string; destination: string; travelers: string; message: string }) {
+export function contactNotificationTemplate(data: {
+  fullName: string;
+  email: string;
+  phone: string;
+  company: string;
+  destination: string;
+  travelers: string;
+  message: string;
+}) {
   return `
     <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #FAF9F6; padding: 40px 24px;">
       <div style="text-align: center; margin-bottom: 32px;">
-        <h1 style="color: #0F1F3D; font-size: 28px; margin: 0;">Sky<span style="color: #E8A020;">Birds</span></h1>
+        ${emailBrandMarkup()}
       </div>
       <div style="background: white; border-radius: 16px; padding: 40px 32px; box-shadow: 0 4px 24px rgba(15,31,61,0.08);">
         <h2 style="color: #0F1F3D; font-size: 22px; margin: 0 0 16px;">New Contact Form Submission</h2>
@@ -90,11 +118,19 @@ export function contactNotificationTemplate(data: { fullName: string; email: str
   `;
 }
 
-export function bookingConfirmationTemplate(data: { name: string; destination: string; travelDate: string; returnDate: string; travelers: number; amount: string; bookingId: string }) {
+export function bookingConfirmationTemplate(data: {
+  name: string;
+  destination: string;
+  travelDate: string;
+  returnDate: string;
+  travelers: number;
+  amount: string;
+  bookingId: string;
+}) {
   return `
     <div style="font-family: 'Plus Jakarta Sans', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #FAF9F6; padding: 40px 24px;">
       <div style="text-align: center; margin-bottom: 32px;">
-        <h1 style="color: #0F1F3D; font-size: 28px; margin: 0;">Sky<span style="color: #E8A020;">Birds</span></h1>
+        ${emailBrandMarkup()}
       </div>
       <div style="background: white; border-radius: 16px; padding: 40px 32px; box-shadow: 0 4px 24px rgba(15,31,61,0.08);">
         <div style="text-align: center; margin-bottom: 24px;">
