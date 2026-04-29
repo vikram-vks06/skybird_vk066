@@ -101,7 +101,7 @@ export default function WhyUsSection() {
             {/* Client image - further down right, above ring */}
             <div className="absolute z-20" style={{ bottom: '-56px', right: '-56px' }}>
               <div className="flex flex-col items-center">
-                <span className="block rounded-full bg-white p-[5px]">
+                <span className="block rounded-full shadow bg-white p-[8px]">
                   <img src={testimonials[current].image} alt={testimonials[current].name} className="w-36 h-36 rounded-full object-cover shadow-xl" />
                 </span>
                 <p className="font-serif italic text-2xl mt-2 mb-0.5" style={{ color: '#E8A020' }}>{testimonials[current].rating}★</p>
